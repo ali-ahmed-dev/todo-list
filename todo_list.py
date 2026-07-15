@@ -69,10 +69,39 @@ def complete_task():
         write_tasks_to_file()
 
 
+def search_tasks():
+    keyword = input("Enter keyword to search: ").lower()
+    results = [task for task in tasks if keyword in task["description"].lower()]
+    if not results:
+        print("No tasks found with that keyword.")
+    else:
+        print("Search results:")
+        for index, task in enumerate(results, start=1):
+            status = "✓" if task["completed"] else "✗"
+            print(f"{index}. [{status}] {task['description']}")
+
+
+def sort_tasks():
+    print("\n1. Sort by completion status\n2. Sort alphabetically")
+    choice = input("Choose sorting option (1-2): ")
+    if choice == "1":
+        sorted_list = sorted(tasks, key=lambda t: t["completed"])
+    elif choice == "2":
+        sorted_list = sorted(tasks, key=lambda t: t["description"].lower())
+    else:
+        print("Invalid option.")
+        return
+
+    print("Sorted tasks:")
+    for index, task in enumerate(sorted_list, start=1):
+        status = "✓" if task["completed"] else "✗"
+        print(f"{index}. [{status}] {task['description']}")
+
+
 print("Welcome to the To-Do List App!")
 while True:
-    print("\n1.View tasks\n2. Add a task\n3. Edit a task\n4. Remove a task\n5. Complete a task\n6. Exit")
-    choice = input("choose an option (1-6): ")
+    print("\n1.View tasks\n2. Add a task\n3. Edit a task\n4. Remove a task\n5. Complete a task\n6. Search tasks\n7. Sort tasks\n8. Exit")
+    choice = input("choose an option (1-8): ")
     if choice == "1":
         view_tasks()
     elif choice == "2":
@@ -84,6 +113,10 @@ while True:
     elif choice == "5":
         complete_task()
     elif choice == "6":
+        search_tasks()
+    elif choice == "7":
+        sort_tasks()
+    elif choice == "8":
         print("Exiting the app. Goodbye!")
         break
     else:
